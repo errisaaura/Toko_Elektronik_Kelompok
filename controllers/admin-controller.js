@@ -25,7 +25,7 @@ module.exports = {
             username: req.body.username,
             password : req.body.password
         }
-        let sql = `INSERT INTO siswa SET ?`
+        let sql = `INSERT INTO admin SET ?`
 
         db.query(sql, tambah_admin, (err, result) => {
             if(err){
@@ -43,6 +43,49 @@ module.exports = {
                 })
             }
         })
+    },
+    update: (req,res) => {
+        const id_admin = req.params.id_admin
+        let edit_admin = {
+            name : req.body.name,
+            phone : req.body.phone,
+            address : req.body.address,
+            username : req.body.username,
+            password : req.body.password
+        }
+        let sql = `UPDATE admin SET ? WHERE id_admin = '${id_admin}'`
 
+        db.query(sql, edit_admin, (err, result) => {
+            if(err){
+                console.log(err.message)
+            }else{
+                res.json({
+                    message : "Data admin berhasil di update",
+                    data : ({
+                        id : id_admin,
+                        name : edit_admin.name,
+                        phone : edit_admin.phone,
+                        address : edit_admin.address,
+                        username : edit_admin.username,
+                        password : edit_admin.password
+                    })
+                })
+            }
+        })
+    },
+
+    delete: (req,res) => {
+        const id_admin = req.params.id_admin
+        let sql = `DELETE FROM admin WHERE id_admin = '${id_admin}'`
+
+        db.query(sql, (err, result) => {
+            if(err){
+                console.log(err.message)
+            }else{
+                res.json({
+                    message : "Data admin berhasil di hapus"
+                })
+            }
+        })
     }
 }
