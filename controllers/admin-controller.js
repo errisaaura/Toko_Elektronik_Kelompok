@@ -3,6 +3,7 @@
 const db = require('../db')
 
 module.exports = {
+    //ini menampilkan semua data
     tampil: (req,res) => {
         const sql = `SELECT * FROM admin`
         db.query(sql, (err, result) => {
@@ -10,13 +11,14 @@ module.exports = {
                 throw err
             }else(
                 res.json({
-                    message : "Menampilkan semua data admin",
+                    message : " Berhasil menampilkan semua data admin",
                     data: result
                 })
             )
         })
     },
 
+    //ini untuk menambah data
     tambah: (req,res) => {
         let tambah_admin = {
             name: req.body.name,
@@ -32,7 +34,7 @@ module.exports = {
                 throw err
             }else{
                 res.json({
-                    message: "Data admin berhasil ditambahkan",
+                    message: "Berhasil menambahkan data admin",
                     data: ({
                         name: tambah_admin.name,
                         phone: tambah_admin.phone,
@@ -44,6 +46,8 @@ module.exports = {
             }
         })
     },
+
+    //ini untuk mengedit admin berdasarkan id
     update: (req,res) => {
         const id_admin = req.params.id_admin
         let edit_admin = {
@@ -60,7 +64,7 @@ module.exports = {
                 console.log(err.message)
             }else{
                 res.json({
-                    message : "Data admin berhasil di update",
+                    message :  "Berhasil mengupdate data admin",
                     data : ({
                         id : id_admin,
                         name : edit_admin.name,
@@ -74,6 +78,7 @@ module.exports = {
         })
     },
 
+    //ini untuk menghapus admin berdasarkan id
     delete: (req,res) => {
         const id_admin = req.params.id_admin
         let sql = `DELETE FROM admin WHERE id_admin = '${id_admin}'`
@@ -83,7 +88,7 @@ module.exports = {
                 console.log(err.message)
             }else{
                 res.json({
-                    message : "Data admin berhasil di hapus"
+                    message :  "Berhasil menghapus data admin"
                 })
             }
         })
