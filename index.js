@@ -31,6 +31,7 @@ app.get("/", (req,res) => {
 
 app.use("/admin", require('./routes/admin-route'))
 app.use("/product", require('./routes/product-route'))
+app.use("/user", require('./routes/user-route'))
 
 //ini untuk servernya
 const port = 3000
