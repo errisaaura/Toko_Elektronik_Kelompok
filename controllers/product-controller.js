@@ -1,14 +1,12 @@
 'use strict'
 
-//import exspress
 const express = require('express');
-const app = express()
-app.use(express.json)
+const bodyParser = require('body-parser')
 
-//import multer
-const multer = require("multer")
-const path = require("path")
-const fs = require("fs")
+//implementasi library
+const app = express()
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: false}))
 
 //database
 const db = require("../db");
@@ -51,19 +49,23 @@ module.exports = {
         }else{
             let tambah_product = {
                 name: req.body.name,
-                price : req.body.price,
+                harga : req.body.harga,
                 stock : req.body.stock,
                 description : req.body.description,
                 image: req.file.filename
             }
-            const sql = `INSERT INTO product SET ?`
+            let sql = `INSERT INTO product SET ?`
             db.query(sql, tambah_product, (err, result) => {
-                if((null, err)) throw err
-                
-                res.json({
-                    messsage: "Berhasil menambahkan data product",
-                    data: tambah_product
-                })
+                if(err){
+                    throw err
+                }else{
+                    res.json({
+                        messsage: "Berhasil menambahkan data product",
+                        data: tambah_product
+                    })
+
+                }
+               
             })
         }
     },
@@ -73,7 +75,7 @@ module.exports = {
         let id_product = req.params.id_product
         let edit_product = {
             name : req.body.name,
-            price : req.body.price,
+            harga : req.body.harga,
             stock : req.body.stock,
             description : req.body.description   
         }
