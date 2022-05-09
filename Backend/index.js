@@ -32,7 +32,7 @@ app.get("/", (req,res) => {
 app.use("/admin", require('./routes/admin-route'))
 app.use("/product", require('./routes/product-route'))
 app.use("/user", require('./routes/user-route'))
-
+app.use("/transaksi", require("./routes/transaksi-route"))
 //ini untuk servernya
 const port = 3000
 app.listen(port, () => {
