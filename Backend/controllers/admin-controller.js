@@ -3,6 +3,16 @@
 const session = require("express-session");
 const db = require('../db')
 
+const bcrypt = require("bcrypt")
+const jsonwebtoken = require("jsonwebtoken")
+
+const secret = 'kodeAdmin'
+
+function hashPassword (password) {
+    const salt = bcrypt.genSaltSync(10)
+    return bcrypt.hashSync(password, salt)
+}
+
 module.exports = {
     //ini menampilkan semua data
     tampil: (req,res) => {
@@ -94,5 +104,61 @@ module.exports = {
             }
         })
     },
+
+    // //endpoint login admin, METHOD: POST, function: findOne
+    // login : (async, req,res) => {
+    //     let data = {
+    //         username: req.body.username,
+    //         password: req.body.password
+    //     }
+
+    //     // let result  = await admin.findOne({where: data})
+    //     let result  = bcrypt.compareSync(password, admin.password)
+        
+    //     if(!result){
+    //         //set payload from data
+    //         let payload = JSON.stringify({
+    //             id_admin: result.id_admin,
+    //             // name: result.name,
+    //             username: result.username
+    //         })//convert javascript ke json
+
+    //         let token = jwt.sign(payload, secret)
+            
+    //         res.json({
+    //             logged: true,
+    //             data: result,
+    //             token: token
+    //         })
+    //     }else{
+
+    //         res.json({
+    //             logged: false,
+    //             message: "Invalid Username or Password"
+    //         })
+    //     }
+    // }
+    login: (req,res) => {
+        const username = req.body.username
+        const password = req.body.password
+
+        if(!username || !password){
+            res.status(402).json({message : 'Email dan Password harus diisi'})
+        }else{
+            return db.query(`SELECT * FROM admin where username = ?`, username, (err,result) => {
+                if(err) return res.status(500).json(err)
+
+                const admin = result[0]
+                if(typeof admin === 'undefined') return res.status(401).json({message : "Admin tidak ditemukan", err})
+
+                if(!bcrypt.compareSync(password, admin.password)){
+                    if(err) res.status(401).json({message : "Username atau Password tidak sesuai", err})
+                }
+                const token = jsonwebtoken.sign({data : admin}, secret)
+                return res.json({message : 'Login berhasil, silahkan mengisi token dibawah ini untuk mengakses endpoint private lain', token})
+            })  
+
+        }
+    }
 
 }

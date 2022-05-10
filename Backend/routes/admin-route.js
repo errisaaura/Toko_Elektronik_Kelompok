@@ -8,6 +8,7 @@ router.get("/tampil", adminController.tampil)
 router.post("/tambah", adminController.tambah)
 router.put ("/update/:id_admin", adminController.update)
 router.delete ("/delete/:id_admin", adminController.delete)
+router.post("/login", adminController.login)
 
 
 

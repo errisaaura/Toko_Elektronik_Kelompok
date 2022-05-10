@@ -24,7 +24,9 @@ let upload = multer({
     storage: storage
 })
 
-router.get("/tampil", productController.tampil)
+const {checkToken} = require('../auth/tokenAdmin')
+
+router.get("/tampil", checkToken, productController.tampil)
 router.get("/tampil/:id_product", productController.tampil_id)
 router.post("/tambah", upload.single("image"), productController.tambah)
 router.put("/update/:id_product", upload.single("image"), productController.update)

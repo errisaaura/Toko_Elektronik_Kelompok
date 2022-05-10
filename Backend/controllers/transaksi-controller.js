@@ -17,7 +17,7 @@ module.exports = {
     //ini untuk menambahkan data
     tambah : (req,res) => {
         var now = new Date();
-        var date = moment(now).format('DD-MM-YYYY');
+        var date = moment(now).format('YYYY-MM-DD');
         let tambah_transaksi = {
             id_user : req.body.id_user,
             id_product : req.body.id_product,
@@ -44,7 +44,7 @@ module.exports = {
         let sql = `SELECT * FROM transaksi JOIN user ON transaksi.id_user = user.id_user JOIN product ON transaksi.id_product = product.id_product`
         db.query(sql, (err, result) => {
             if(err) throw err
-            var transaksi = results[0].tanggal
+            var transaksi = result[0].tanggal
             var dateformat = moment(transaksi).format('YYYY-MM-DD');
             res.json({
                 message: "Berhasil menampilkan semua data transaksi",
