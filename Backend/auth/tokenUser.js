@@ -1,5 +1,5 @@
 const {verify, decode} = require('jsonwebtoken')
-const secret = 'kodeAdmin'
+const secret = 'kodeUser'
 
 module.exports={
     checkToken: (req,res, next)=> {
@@ -23,8 +23,9 @@ module.exports={
         }else{
             res.json({
                 success: 0,
-                message: "Access Denied : unauthorized admin"
+                message: "Access Denied : unauthorized user"
             })
         }
+
     }
 }

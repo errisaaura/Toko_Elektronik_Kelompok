@@ -26,10 +26,12 @@ let upload = multer({
 
 const {checkToken} = require('../auth/tokenAdmin')
 
-router.get("/tampil", checkToken, productController.tampil)
+
+router.get("/tampil", productController.tampil)
 router.get("/tampil/:id_product", productController.tampil_id)
-router.post("/tambah", upload.single("image"), productController.tambah)
-router.put("/update/:id_product", upload.single("image"), productController.update)
-router.delete("/delete/:id_product", productController.delete)
+router.post("/tambah", checkToken, upload.single("image"), productController.tambah)
+router.put("/update/:id_product",checkToken,  upload.single("image"), productController.update)
+router.delete("/delete/:id_product",checkToken,  productController.delete)
+router.post("/find", productController.find)
 
 module.exports = router

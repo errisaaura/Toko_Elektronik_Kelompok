@@ -1,6 +1,6 @@
 'use strict'
 
-const session = require("express-session");
+// const session = require("express-session");
 const db = require('../db')
 
 const bcrypt = require("bcrypt")
@@ -104,46 +104,13 @@ module.exports = {
             }
         })
     },
-
-    // //endpoint login admin, METHOD: POST, function: findOne
-    // login : (async, req,res) => {
-    //     let data = {
-    //         username: req.body.username,
-    //         password: req.body.password
-    //     }
-
-    //     // let result  = await admin.findOne({where: data})
-    //     let result  = bcrypt.compareSync(password, admin.password)
-        
-    //     if(!result){
-    //         //set payload from data
-    //         let payload = JSON.stringify({
-    //             id_admin: result.id_admin,
-    //             // name: result.name,
-    //             username: result.username
-    //         })//convert javascript ke json
-
-    //         let token = jwt.sign(payload, secret)
-            
-    //         res.json({
-    //             logged: true,
-    //             data: result,
-    //             token: token
-    //         })
-    //     }else{
-
-    //         res.json({
-    //             logged: false,
-    //             message: "Invalid Username or Password"
-    //         })
-    //     }
-    // }
+    
     login: (req,res) => {
         const username = req.body.username
         const password = req.body.password
 
         if(!username || !password){
-            res.status(402).json({message : 'Email dan Password harus diisi'})
+            res.status(402).json({message : 'Username dan Password harus diisi'})
         }else{
             return db.query(`SELECT * FROM admin where username = ?`, username, (err,result) => {
                 if(err) return res.status(500).json(err)
@@ -159,6 +126,22 @@ module.exports = {
             })  
 
         }
+    },
+
+    find: (req,res) => {
+        let find = req.body.find
+        let sql = "select * from admin where name like '%" + find + "%' or phone like '%" + find + "%' or address like '%" + find + "%' or username like '%" + find + "%' or id_admin like '%" + find + "%' "
+
+        db.query(sql, (err, result) => {
+            if(err){
+                throw err
+            }else(
+                res.json({
+                    message : " Berhasil menampilkan data admin",
+                    data: result
+                })
+            )
+        })
     }
 
 }

@@ -111,6 +111,22 @@ module.exports = {
                 data: result
             })
         })
+    },
+
+    find: (req,res) => {
+        let find = req.body.find
+        let sql = "select * from product where name like '%" + find + "%' or harga like '%" + find + "%' or description like '%" + find + "%' or stock like '%" + find + "%' or id_product like '%" + find + "%' "
+
+        db.query(sql, (err, result) => {
+            if(err){
+                throw err
+            }else(
+                res.json({
+                    message : " Berhasil menampilkan data product",
+                    data: result
+                })
+            )
+        })
     }
 
 
